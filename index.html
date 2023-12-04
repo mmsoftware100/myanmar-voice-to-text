@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Burmese Voice ai</title>
+  </head>
+  <body>
+      <h1>Burmese Voice</h1>
+      <button type="button" onclick="init()">Start</button>
+      <button type="button" onclick="stop()">Stop</button>
+      <div id="label-container"></div>
+      <script src="./burmese-voice.js"></script>
+      <script>
+          let burmeseVoice;
+
+        async function main(){
+          const URL = "http://localhost:3000/model/"; // must be aboluste URL
+          burmeseVoice = new BurmeseVoice(URL)
+          await burmeseVoice.load();
+          console.log(burmeseVoice.getLabels());
+        }
+
+        function init(){
+          burmeseVoice.listen((result)=>{
+              // console.log(result);
+              const voice = burmeseVoice.getBestResult(result.scores);
+              if(voice.index > 0 ) console.log(voice);
+              // console.log(voice);
+          });
+        }
+
+        function stop(){
+          burmeseVoice.stopListening();
+        }
+
+        main();
+
+      </script>
+  </body>
+</html>
